@@ -168,6 +168,13 @@ public class KingdomGame extends PixelGameEngine
                         player.setGoingToCutTree(false);
                         player.setCuttingTree(true);
                         player.setStartedCutting(System.currentTimeMillis());
+                        for (int dx = -3; dx < 3; dx++) {
+                            Tile tile = this.map.getTile((int) (this.player.getX() + dx), (int) this.player.getY());
+                            if(tile != null && tile.equals(Tile.TREE_BASE))
+                            {
+                                this.map.setData((int) (this.player.getX() + dx), (int) this.player.getY(), 1);
+                            }
+                        }
                     }
                 }
 
