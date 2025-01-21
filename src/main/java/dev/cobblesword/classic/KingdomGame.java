@@ -84,10 +84,21 @@ public class KingdomGame extends PixelGameEngine
 
         if(GetMouse(1))
         {
-            PathFind pathFind = new PathFind();
-            pathFind.setCurrent((int)player.getX(), (int)player.getY());
             int gridX = MouseX() / 16;
             int gridY = MouseY() / 16;
+
+            // Should cutdown tree
+            if(this.map.getTile(gridX, gridY) == Tile.TREE_BASE)
+            {
+                do {
+                    gridX = gridX - 1;
+                } while (this.map.getTile(gridX, gridY) == Tile.TREE_BASE);
+                this.player.setGoingToCutTree(true);
+            }
+
+            PathFind pathFind = new PathFind();
+            pathFind.setCurrent((int)player.getX(), (int)player.getY());
+
             pathFind.setGoal(gridX, gridY);
             pathFind.updatePath(map);
             player.setPathFind(pathFind);
@@ -100,12 +111,12 @@ public class KingdomGame extends PixelGameEngine
 
         DrawSprite((int) (player.getX() * 16) - 8, (int) (player.getY() * 16) - 8, Assets.getInstance().player1);
 
-        this.map.renderMore(this);
-
         int gridX = MouseX() / 16;
         int gridY = MouseY() / 16;
 
         DrawSprite(gridX * 16, gridY * 16,  Assets.getInstance().selector1);
+
+        this.map.renderMore(this);
 
         if(player.getPathFind() != null)
         {
@@ -147,6 +158,33 @@ public class KingdomGame extends PixelGameEngine
                         float step = speed * fElapsedTime / distance;
                         player.setX(player.getX() + dx * step);
                         player.setY(player.getY() + dy * step);
+                    }
+                }
+
+                if (currentNodeIndex == path.size())
+                {
+                    if(player.isGoingToCutTree())
+                    {
+                        player.setGoingToCutTree(false);
+                        player.setCuttingTree(true);
+                        player.setStartedCutting(System.currentTimeMillis());
+                    }
+                }
+
+                if(player.isCuttingTree())
+                {
+                    if(System.currentTimeMillis() - player.getStartedCutting() > 2000)
+                    {
+                        for (int dx = -3; dx < 3; dx++) {
+                            Tile tile = this.map.getTile((int) (this.player.getX() + dx), (int) this.player.getY());
+                            if(tile != null && tile.equals(Tile.TREE_BASE))
+                            {
+                                this.map.setTile((int) (this.player.getX() + dx), (int) this.player.getY(), null);
+                            }
+                        }
+
+                        player.setCuttingTree(false);
+                        player.setStartedCutting(-1);
                     }
                 }
             }

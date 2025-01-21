@@ -7,7 +7,7 @@ public class Tile
     public static Tile ROCK = new Tile(2, 1, "Rock");
 
     // Invisible block
-    public static Tile BARRIER = new Tile(3, 1, "Barrier");
+    public static Tile TREE_BASE = new Tile(3, 1, "Tree Root");
 
     private int id;
 

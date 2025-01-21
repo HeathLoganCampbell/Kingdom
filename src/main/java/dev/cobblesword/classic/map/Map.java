@@ -19,6 +19,9 @@ public class Map
         this.backgroundLayer = new TileMap(width, height);
         this.objectLayer = new TileMap(width, height);
         this.foregroundLayer = new TileMap(width, height);
+
+        setTile(5, 5, Tile.TREE_BASE);
+        setTile(6, 5, Tile.TREE_BASE);
     }
 
     public void render(KingdomGame engine)
@@ -50,26 +53,35 @@ public class Map
             }
         }
 
-        for (int i = 0; i < this.width; i++)
-        {
-            for (int j = 0; j < this.height; j++)
-            {
-                Tile tile = this.foregroundLayer.getTile(i, j);
-
-            }
-        }
+//        for (int i = 0; i < this.width; i++)
+//        {
+//            for (int j = 0; j < this.height; j++)
+//            {
+//                Tile tile = this.foregroundLayer.getTile(i, j);
+//
+//            }
+//        }
     }
 
     public void renderMore(KingdomGame engine)
     {
-        setTile(5, 5, Tile.BARRIER);
-        setTile(6, 5, Tile.BARRIER);
-        engine.DrawSprite(16 * 4, (16 * 5) - 48,  Assets.getInstance().tree1);
+        for (int i = 0; i < this.width; i++)
+        {
+            for (int j = 0; j < this.height; j++)
+            {
+                Tile tile = this.objectLayer.getTile(i, j);
+                if(tile == null) continue;
+                if(tile.equals(Tile.TREE_BASE))
+                {
+                    engine.DrawSprite(16 * 4, (16 * 5) - 48,  Assets.getInstance().tree1);
+                }
+            }
+        }
     }
 
     public void setTile(int x, int y, Tile tile)
     {
-        if(Tile.ROCK.equals(tile) || Tile.BARRIER.equals(tile))
+        if(tile == null || Tile.ROCK.equals(tile) || Tile.TREE_BASE.equals(tile))
         {
             this.objectLayer.setTile(x, y, tile);
         }
