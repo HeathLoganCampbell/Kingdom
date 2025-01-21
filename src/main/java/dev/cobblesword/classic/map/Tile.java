@@ -6,6 +6,9 @@ public class Tile
 
     public static Tile ROCK = new Tile(2, 1, "Rock");
 
+    // Invisible block
+    public static Tile BARRIER = new Tile(3, 1, "Barrier");
+
     private int id;
 
     private int layer;

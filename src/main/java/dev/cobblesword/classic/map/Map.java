@@ -58,13 +58,18 @@ public class Map
 
             }
         }
+    }
 
-        engine.DrawSprite(100, 100,  Assets.getInstance().tree1);
+    public void renderMore(KingdomGame engine)
+    {
+        setTile(5, 5, Tile.BARRIER);
+        setTile(6, 5, Tile.BARRIER);
+        engine.DrawSprite(16 * 4, (16 * 5) - 48,  Assets.getInstance().tree1);
     }
 
     public void setTile(int x, int y, Tile tile)
     {
-        if(Tile.ROCK.equals(tile))
+        if(Tile.ROCK.equals(tile) || Tile.BARRIER.equals(tile))
         {
             this.objectLayer.setTile(x, y, tile);
         }

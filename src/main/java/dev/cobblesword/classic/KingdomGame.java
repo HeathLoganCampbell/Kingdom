@@ -100,6 +100,8 @@ public class KingdomGame extends PixelGameEngine
 
         DrawSprite((int) (player.getX() * 16) - 8, (int) (player.getY() * 16) - 8, Assets.getInstance().player1);
 
+        this.map.renderMore(this);
+
         int gridX = MouseX() / 16;
         int gridY = MouseY() / 16;
 
