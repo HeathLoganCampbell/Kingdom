@@ -6,18 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Node implements Comparable<Node> {
-      // Id for readability of result purposes
       private static int idCounter = 0;
       public int id;
 
-      // Parent in the path
       public Node parent = null;
 
       public List<Edge> neighbors;
 
-      // Evaluation functions
       public double f = Double.MAX_VALUE;
-      public double g = Double.MAX_VALUE;
 
       @Getter
       private int x;

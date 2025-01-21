@@ -32,12 +32,12 @@ public class PathFind
         this.currentY = y;
     }
 
-    public static List<Node> aStar(Node start, Node target)
+    public List<Node> aStar(Node start, Node target)
     {
         PriorityQueue<Node> closedList = new PriorityQueue<>();
         PriorityQueue<Node> openList = new PriorityQueue<>();
 
-        start.f = start.g + start.calculateHeuristic(target);
+        start.f = start.calculateHeuristic(target);
         openList.add(start);
 
         while(!openList.isEmpty()){
@@ -60,84 +60,11 @@ public class PathFind
             for(Node.Edge edge : n.neighbors)
             {
                 Node m = edge.node;
-                double totalWeight = n.g + 1;
-
-                if(!openList.contains(m) && !closedList.contains(m)){
-                    m.parent = n;
-                    m.g = totalWeight;
-                    m.f = m.g + m.calculateHeuristic(target);
-                    openList.add(m);
-                } else {
-                    if(totalWeight < m.g){
-                        m.parent = n;
-                        m.g = totalWeight;
-                        m.f = m.g + m.calculateHeuristic(target);
-
-                        if(closedList.contains(m)){
-                            closedList.remove(m);
-                            openList.add(m);
-                        }
-                    }
-                }
-            }
-
-            openList.remove(n);
-            closedList.add(n);
-        }
-
-        return null;
-    }
-
-    public List<Node> aStar2(Node start, Node target)
-    {
-        PriorityQueue<Node> closedList = new PriorityQueue<>();
-        PriorityQueue<Node> openList = new PriorityQueue<>();
-
-        start.f = start.g + start.calculateHeuristic(target);
-        openList.add(start);
-
-        while(!openList.isEmpty()){
-            Node n = openList.peek();
-            if(n == target)
-            {
-                ArrayList<Node> nodes = new ArrayList<>();
-
-                while(n.parent != null){
-                    nodes.add(n);
-                    n = n.parent;
-                }
-
-                nodes.add(n);
-                Collections.reverse(nodes);
-
-                return nodes;
-            }
-
-            for(Node.Edge edge : n.neighbors)
-            {
-                Node m = edge.node;
-                double totalWeight = n.g + 1;
-
                 if(!openList.contains(m) && !closedList.contains(m))
                 {
                     m.parent = n;
-                    m.g = totalWeight;
-                    m.f = m.g + m.calculateHeuristic(target);
+                    m.f = m.calculateHeuristic(target);
                     openList.add(m);
-                }
-                else
-                {
-                    if(totalWeight < m.g)
-                    {
-                        m.parent = n;
-                        m.g = totalWeight;
-                        m.f = m.g + m.calculateHeuristic(target);
-
-                        if(closedList.contains(m)){
-                            closedList.remove(m);
-                            openList.add(m);
-                        }
-                    }
                 }
             }
 
@@ -146,7 +73,6 @@ public class PathFind
         }
         return null;
     }
-
 
     public void updatePath(Map map)
     {
@@ -190,9 +116,8 @@ public class PathFind
         }
 
         Node currentNode = nodes[this.currentX][this.currentY];
-        currentNode.g = 0;
         Node targetNode = nodes[this.goalX][this.goalY];
 
-        this.path =  aStar2(currentNode, targetNode);
+        this.path =  aStar(currentNode, targetNode);
     }
 }
